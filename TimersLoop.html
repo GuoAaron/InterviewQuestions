@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>循环调用函数</title>
+</head>
+<body>
+<script type="text/javascript">
+	/*有3个函数，命名为func1、func2、func3，执行func1函数5秒后执行func2函数后5秒执行func3函数，
+	执行func3函数5秒后返回执行func1函数，这样循环*/
+	function func1() {
+		console.log("01");
+		setTimeout(func2,5000);
+	}
+	function func2(){
+		console.log("02");
+		setTimeout(func3,5000);
+	}
+	function func3(){
+		console.log("03");
+		setTimeout(func1,5000);
+	}
+	func1();
+	var str = "/[\+\-]?\d+\.?\d/";
+</script>
+	<div id="left-seconds">
+		<h2>时间秒表</h2>
+		<span id="time">60</span>
+		<<button type="button" value="倒计时" onclick=""></button>
+	</div>
+</body>
+</html>

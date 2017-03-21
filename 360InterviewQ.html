@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title></title>
+	<link rel="stylesheet" href="">
+	<<style type="text/css" media="screen">
+		/*第八题：div的上下左右居中*/
+		#show{
+			border: 1px solid black;
+			width: 200px;
+			height: 200px;
+			background: red;
+			/*div的上下左右居中*/
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			margin-top: -100px;
+			margin-left: -100px;
+		}
+
+	</style>
+	<script type="text/javascript">
+		//第九题：让leftSeconds里面的内容没秒少一，一直到0
+		function clock(){
+			var div = document.getElementById("leftSeconds");
+			var time = div.innerHTML;
+			//time = div.innerText;
+			if(time --){
+				div.innerHTML = time;
+			}
+		};
+		function test(){
+			debugger;
+			var time = document.getElementById("leftSeconds").innerHTML;
+			var int = setInterval("clock()",1000);
+			if(time == 0){
+				clearInterval(int);
+			}			
+		};				
+	</script>
+
+	<script type="text/javascript">
+		/*第三题：console出来的值*/
+		//碌脷脠媒脤芒
+		window.val = 1;
+		var json = {
+			val: 10,
+			dbl: function(){
+				this.val*=2;
+				console.log(val);
+			}
+		};
+		json.dbl();	//1
+		var dbl = json.dbl;
+		dbl();//2		
+		json.dbl.call(window);//4
+		console.log(window.val + json.val);//NaN
+		//第四题：console出来的值
+		console.log("第四题");
+		(function(){
+			var val = 1;
+			var json = {
+				val: 10,
+				dbl: function(){
+					val*=2;
+					console.log(val);
+				}
+			};
+			json.dbl();
+			console.log(json.val+val);
+		}());
+		//第五题：
+		console.log("第五题：");
+		function C1(name){
+			if(name)this.name = name;
+		}
+		function C2(name){
+			this.name = name;
+		}				
+		function C3(name){
+			this.name = name || 'John';
+		}
+		C1.prototype.name = 'Tom';
+		C2.prototype.name = 'Tom';
+		C3.prototype.name = 'Tom';
+		console.log((new C1().name) + (new C2().name) + (new C3().name));
+		
+		onload = function(){			
+			//13、点击a链接打印出索引
+			//1、闭包解决2、通过设置data自定义属性直接获取(需要往元素中添加自定义data属性)
+			var indexs = document.getElementsByClassName("indexs");
+			//indexs = document.querySelector(".indexs");
+			//indexs = document.getElementsByTagName("a");					
+			for(var i = 0;i < indexs.length;i++){
+				(function(i){					
+					indexs[i].onclick = function(){
+						console.log(i+1);
+						//通过设置data自定义属性直接获取
+						alert(this.getAttribute("data-index"));	
+						alert(this.dataset.index);//兼容性不是太好
+						this.dataset.index = i;					
+					}
+				}(i));
+			};						
+			var tmp1 = random1(4,1,20);
+			console.log(tmp1);
+			//var tmp = random(4,1,5);			
+		};
+		//12、产生n个随机且不重复的整数，且整数取值范围为[2,32]
+			//方法1、直接根据区间定义一个数组，通过下标取数(已实现)			
+			function random1(num,min,max){
+				var init = [];
+				var r = [];//临时数组				
+				var tmp = min;
+				if(max < min){
+					min = max;
+					max = tmp;
+				}
+				for (var i = min; i <= max; i++) {
+					init.push(i);
+				}
+				var index;							
+				for (var i = 0; i < num; i++) {										
+					index = Math.floor(Math.random()*(max - min + 1 - i));						
+					r.push(init[index]);
+					init.splice(index,1);//删除当前下标的数据，并从新排序									
+				}
+				return r;
+				
+			};
+			//方法2、随机生成数，进行对比，若存在继续生成，不存在保存到数组中(暂时没有实现)			
+			function random(num,min,max){
+				debugger;
+				var tmp = min;
+				var arr = new Array();
+				var a;
+				var n = {};//n位hash表
+				var r = [];//临时数组
+				if(max < min ){
+					min = max;
+					max = tmp;
+				}
+				randomNum = function(){
+					return Math.floor(Math.random()*(max - min + 1) + min);//产生一定区间的整数										
+				};
+				for (var i = 0; i < num; i++) {
+					debugger;
+					a = randomNum();
+					if(i == 0){
+						arr.push(a);
+						n[a] = true;
+					}else{
+						if(!n[a]){
+							n[a] = true;
+							arr.push(a);
+						}else{
+
+						}						
+					}					
+				}
+				return arr;
+			};
+
+	</script>
+</head>
+<body onload="onload()">
+	<div>
+		<a href="javaScript:void(0)" class="indexs" data-index="1">索引1</a>
+		<a href="javaScript:void(0)" class="indexs" data-index="2">索引2</a>	
+		<a href="javaScript:void(0)" class="indexs" data-index="3">索引3</a>
+		<a href="javaScript:void(0)" class="indexs" data-index="4">索引4</a>		
+	</div>
+	<div  id="leftSeconds">60</div>
+	<input type="button" name="" value="倒计时" onclick="test()">
+	<div id="show"></div>
+</body>
+</html>

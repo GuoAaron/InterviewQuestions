@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<style type="text/css">
+	.closure{
+			padding: 50px 5px;
+			width: 200px;
+			height: 100px;
+			border: 1px solid yellow;
+			position: relative;
+			float: left;			
+		}
+	</style>
+</head>
+<body>
+	<div class="closure">
+		<span>JS闭包限制变量作用域</span>
+		<ul id="">
+			<li>index = 0</li>
+			<li>index = 1</li>
+			<li>index = 2</li>
+			<li>index = 3</li>
+		</ul>
+	</div>
+	<div class="closure">
+		<span>闭包在函数外面获取内部变量的值</span>
+		<br>
+		<button id="btn">变量值</button>
+	</div>
+	<script type="text/javascript">
+		/*获取函数中的局部变量值(在函数外改变函数中的变量值)*/
+		var clos = document.getElementsByClassName("closure");
+		function fn1(){
+			var n = 999;
+			addn = function(){
+				n += 1;
+			}
+			function fn2(){
+				clos[1].innerHTML += "<br><span>变量n的值:"+n+"</span>";
+			}
+			return fn2; 
+		}
+		var btn = document.getElementById("btn");
+		btn.onclick = function(){
+			fn = fn1();//必须先要获取外部函数，才能使用内部函数
+			fn();/*999   fn1复制给全局变量  则fn2始终存在内存中，
+			而fn2是依赖于fn1故fn1也存在内存中。调用结束后，不会被垃圾回收机制回收*/
+			addn();/*addn函数定义没有var,为一个全局变量，其次这个addn是一个匿名函数也是一个闭包。
+			可以在函数外部对函数内部的变量进行操作*/
+			fn();//1000			
+		}
+		//2、闭包获取值
+		//获取下标问题
+		var LIs = document.getElementsByTagName('li');
+		/*for (var i = 0; i < LIs.length; i++) {//这个for循环只是进行了事件的绑定，事件触发时与for循环无关
+			LIs[i].onclick = function(){
+				console.log(this.innerHTML);//这个this指向的是点击的标签，不存在闭包问题
+				console.log(i);//这个i一直就为4，通过作用域链往上找，找到i时，已经是for循环结束的i值了。就存在闭包了
+			}			
+		};*/
+		//通过闭包解决获取下标问题
+		for (var i = 0; i < LIs.length; i++) {
+			(function(i){
+				LIs[i].onclick = function(){					
+					console.log(i);
+				};
+			})(i);
+		};
+	</script>
+	<script type="text/javascript">
+	(function(){//考点：区别变量与属性.答案：12
+		var val =1;
+		var json = {
+			val: 10,
+			dbl: function(){
+				val *= 2; 
+			}
+		};
+		json.dbl();
+		alert(json.val + val);
+	})();
+	(function(){});
+	var test = (function(i){//考点：闭包.答案：4
+		return function(){
+			alert(i*2);
+		}
+	}(2));
+	test(5);
+	//立即执行函数
+	//形参、实参都写
+	(function(a){
+		alert(a);
+	})(123);
+	//只写实参,需要arguments来获取实参值
+	(function(){
+		alert(arguments[0]);
+	}(123));
+	//只写形参,好像只能判断形参类型 无法进行操作
+	(function(a){
+		a *=a;
+		alert(a);//显示为NaN
+		a +=a;
+		alert( typeof a);//显示为number  不明白默认为number
+	})();
+	</script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="Pragma" content="no-cache">
+	<title>面试题</title>
+	<style type="text/css">
+		*{
+			padding: 0px;
+			margin: 0px;
+		}
+		html,body,a,ul,li{
+			text-decoration: none;
+			list-style: none;
+		}
+		.interview{
+			width: 600px;
+			/*height: 200px;*/
+			border: 1px solid #ededed;
+		}
+		.demo{
+			width: 200px;
+			height: 200px;
+			border: 2px solid blue;
+			margin: 5px 5px;
+			position: relative;
+		}
+		.demo::after{
+			content: "";
+			position: absolute;
+			width: 20px;
+			height: 20px;			
+			transform: rotate(45deg);/*旋转45度*/			
+			border-top: 2px solid blue;
+			border-right: 2px solid blue;
+			top: 30px;
+			right: -13px;
+			background-color: #fff;
+		}
+		.demo:first-letter{
+			font-size: 40px;
+			float: left;
+			font-weight: bold;
+			line-height: 1;
+		}
+		.bg-style{
+			background: url(images/ico.gif) no-repeat center bottom;
+		}
+	</style>
+	<script type="text/javascript">
+		window.onload = function(){
+			console.log("Array is or is not Array");
+			/*typeof、contructor、instanceof、Object.prototype.toString.call区别*/
+			(function(){
+				var arrs = document.getElementsByClassName("array-list");
+				var arr = ["1","2","3"];
+				var date = new Date();
+				var strs = ["typeof数组判断类型:","instanceof数组判断类型:","contructor数组判断类型:",
+							"Object.prototype.toString.call()数组判断类型:","Array.isArray()数组判断类型:"];	
+				strs[0] += typeof(arr);/*or typeof arr*/
+				strs[1] += arr instanceof Array;
+				strs[2] += arr.contructor;
+				strs[3] += Object.prototype.toString.call(arr);/*or apply()*/
+				strs[4] += Array.isArray(arr);
+				var Ul = document.createElement("ul");
+				var Lis = new Array();
+				for (var i = 0; i < 5; i++) {
+					Lis[i] = document.createElement("li");
+					Lis[i].appendChild(document.createTextNode(strs[i]));
+					Ul.appendChild(Lis[i]);
+				}				
+				console.dir(Ul);
+				arrs[0].appendChild(Ul);
+				alert(1&&2);
+			})(); 
+
+		};
+	</script>
+</head>
+<body>
+	<div class="interview">
+		<span>判断数组是数组</span>
+		<div class="array-list">
+			<span>typeof、instanceof、contructor、<br/>Object.prototype.toString.call、Array.isArray()区别及判断数组</span>
+		</div>
+	</div>
+	<div class="demo bg-style">
+		<span>div的border设计</span>
+	</div>
+</body>
+</html>
